@@ -5,6 +5,7 @@ import userRouter from "./routers/user"
 import listenerRouter from "./routers/listener"
 // scoundScore db :postgresql://soundscoreDB_owner:wCX3k6UdqcSM@ep-crimson-fog-a5dd6fxh.us-east-2.aws.neon.tech/soundscoreDB?sslmode=require
 const app = express();
+app.use(express.json());
 app.use("/v1/user",userRouter);
 app.use("/v1/listner",listenerRouter);
 
