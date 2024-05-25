@@ -19,12 +19,12 @@ export function authMiddleware(
     }
     else
     {
-        return res.status(403).json({ message: "NOT Logged IN" });
+        return res.status(403).json({ message: "NOT Logged SOmetisda IN" });
 
     }
 
     next();
   } catch (err) {
-    return res.status(403).json({ message: "NOT Logged IN" });
+    return res.status(403).json({ message: "NOT asdasd IN" });
   }
 }
