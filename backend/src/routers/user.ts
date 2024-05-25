@@ -9,7 +9,7 @@ import {
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { fromEnv } from "@aws-sdk/credential-providers";
 import jwt from "jsonwebtoken";
-import { JWT_SECRET } from "..";
+import { JWT_SECRET } from "../config";
 import { authMiddleware } from "../middleware";
 import { createPresignedPost } from "@aws-sdk/s3-presigned-post";
 const router = Router();

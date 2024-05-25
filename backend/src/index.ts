@@ -14,4 +14,3 @@ app.listen(4000, () => {
 });
 
 
-export const  JWT_SECRET = "HELLOHIBYE";
