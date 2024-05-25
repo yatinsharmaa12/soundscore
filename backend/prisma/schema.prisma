@@ -40,12 +40,7 @@ model Task{
 
 model Option{
   id Int @id @default(autoincrement())
-  image_url String
-  review String?
-  base Int?
-  treble Int?
-  mids Int?
-  option_id Int 
+  beat_url String
   task_id Int
   task      Task    @relation(fields: [task_id],references: [id])
   submissions Submission[]
