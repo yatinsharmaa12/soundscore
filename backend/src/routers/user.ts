@@ -1,7 +1,11 @@
 import { PrismaClient } from "@prisma/client";
 import { Router } from "express";
 
-import { S3Client, GetObjectCommand, PutObjectCommand } from "@aws-sdk/client-s3";
+import {
+  S3Client,
+  GetObjectCommand,
+  PutObjectCommand,
+} from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { fromEnv } from "@aws-sdk/credential-providers";
 import jwt from "jsonwebtoken";
@@ -9,54 +13,132 @@ import { JWT_SECRET } from "..";
 import { authMiddleware } from "../middleware";
 import { createPresignedPost } from "@aws-sdk/s3-presigned-post";
 const router = Router();
-
+import { createTaskInput } from "../types";
 const prismaClient = new PrismaClient();
-
+const DEFUALT_TITLE = "TESTING";
 const s3Client = new S3Client({
   // credentials:{
   //   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
   //   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
   // }
   credentials: fromEnv(),
-  region:"ap-south-1"
+  region: "ap-south-1",
 });
 
-
-
-
-
-router.get("/presignedURL",authMiddleware, async (req, res) => {
-  
+router.get("/task", authMiddleware, async (req, res) => {
   //@ts-ignore
-  const userId  = req.userId;
+  const taskId: string = req.query.taskId;
+  //@ts-ignore
+  const userId: string = req.userId;
 
-  
-// const command = new PutObjectCommand({
-//   Bucket: "quecto",
-//   Key: `/beats/${userId}/${Math.random()}/beats.mp3`,
-//   //ContentType:
-// });
+  const taskDetails = await prismaClient.task.findFirst({
+    where: {
+      id: Number(taskId),
+      user_id: Number(userId),
+    },
+    include: {
+      options: true,
+    },
+  });
+  if (!taskDetails) {
+    return res.status(411).json({
+      message: "You cant access this task",
+    });
+  }
+  const responses = await prismaClient.submission.findMany({
+    where: {
+      task_id: Number(taskId),
+    },
+    include: {
+      option: true,
+    },
+  });
+  const result: Record<
+    string,
+    {
+      count: number;
+      option: {
+        imageUrl: string;
+      };
+    }
+  > = {};
 
-const { url, fields } = await createPresignedPost(s3Client, {
-  Bucket: 'quecto',
-  Key: 'beats/${userId}/${Math.random()}/beats.mp3',
-  Conditions: [
-    ['content-length-range', 0, 5 * 1024 * 1024] // 5 MB max
-  ],
-  Fields: {
-    // success_action_status: '201',
-    // 'Content-Type': 'image/png'
-  },
-  Expires: 3600
-})
+  taskDetails.options.forEach( option => {
+    result[option.id] = {
+      count: 1,
+      option: {
+        imageUrl: option.beat_url,
+      },
+    };
+  });
 
+  responses.forEach((r) => {
+    result[r.option_id].count++;
+  });
+  res.json({
+    result,
+  });
+});
 
+router.post("/task", authMiddleware, async (req, res) => {
+  //@ts-ignore
+  const userId = req.userId;
+  // validating the inputs
+  const body = req.body;
+  const parsedData = createTaskInput.safeParse(body);
+  if (!parsedData.success) {
+    return res.status(411).json({ message: "Wrong input" });
+  }
 
-console.log({url,fields});
-res.json(
- { preSignedUrl:url}
-)
+  const response = await prismaClient.$transaction(async (tx) => {
+    const response = await tx.task.create({
+      data: {
+        title: parsedData.data.title ?? DEFUALT_TITLE,
+        amount: "1",
+        signature: parsedData.data.signature,
+        user_id: userId,
+      },
+    });
 
+    await tx.option.createMany({
+      data: parsedData.data.options.map((x) => ({
+        beat_url: x.imageUrl,
+        task_id: response.id,
+      })),
+    });
+    return response;
+  });
+
+  res.json({
+    id: response.id,
+  });
+});
+
+router.get("/presignedURL", authMiddleware, async (req, res) => {
+  //@ts-ignore
+  const userId = req.userId;
+
+  // const command = new PutObjectCommand({
+  //   Bucket: "quecto",
+  //   Key: `/beats/${userId}/${Math.random()}/beats.mp3`,
+  //   //ContentType:
+  // });
+
+  const { url, fields } = await createPresignedPost(s3Client, {
+    Bucket: "quecto",
+    Key: "beats/${userId}/${Math.random()}/beats.mp3",
+    Conditions: [
+      ["content-length-range", 0, 5 * 1024 * 1024], // 5 MB max
+    ],
+    Fields: {
+      // success_action_status: '201',
+      // 'Content-Type': 'image/png'
+    },
+    Expires: 3600,
+  });
+
+  console.log({ url, fields });
+  res.json({ preSignedUrl: url });
 });
 
 router.post("/signin", async (req, res) => {
@@ -71,7 +153,7 @@ router.post("/signin", async (req, res) => {
   if (existinguser) {
     const token = jwt.sign(
       {
-        userId: hardcodeduseraddress,
+        userId: existinguser.id,
       },
       JWT_SECRET
     );
