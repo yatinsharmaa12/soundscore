@@ -10,12 +10,14 @@ import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { fromEnv } from "@aws-sdk/credential-providers";
 import jwt from "jsonwebtoken";
 import { JWT_SECRET } from "../config";
-import { authMiddleware } from "../middleware";
+import { authMiddleware, workerAuthMiddleware } from "../middleware";
 import { createPresignedPost } from "@aws-sdk/s3-presigned-post";
 const router = Router();
 import { createTaskInput } from "../types";
 const prismaClient = new PrismaClient();
 const DEFUALT_TITLE = "TESTING";
+const TOTAL_DECIMALS = 1000_000_000;
+
 const s3Client = new S3Client({
   // credentials:{
   //   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -24,6 +26,23 @@ const s3Client = new S3Client({
   credentials: fromEnv(),
   region: "ap-south-1",
 });
+
+router.get('/balance', workerAuthMiddleware,async(req,res)=>{
+  //@ts-ignore
+  const userId:string = req.userId;
+
+  const listener = await prismaClient.listner.findFirst({
+    where:{
+      id:Number(userId)
+    }
+  })
+  res.json(
+    {
+      pendingAmount: listener?.pending_amount,
+      lockedAmount:listener?.locked_amount
+    }
+  );
+})
 
 router.get("/task", authMiddleware, async (req, res) => {
   //@ts-ignore
@@ -94,7 +113,7 @@ router.post("/task", authMiddleware, async (req, res) => {
     const response = await tx.task.create({
       data: {
         title: parsedData.data.title ?? DEFUALT_TITLE,
-        amount: "1",
+        amount: 1 * TOTAL_DECIMALS,
         signature: parsedData.data.signature,
         user_id: userId,
       },
