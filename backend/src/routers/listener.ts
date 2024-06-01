@@ -14,6 +14,24 @@ import { createSubmissionInput } from "../types";
 const TOTAL_SUBMISSION = 100;
 const TOTAL_DECIMALS = 1000_000;
 
+
+router.get('/balance', workerAuthMiddleware,async(req,res)=>{
+  //@ts-ignore
+  const userId:string = req.userId;
+
+  const listener = await prismaClient.listner.findFirst({
+    where:{
+      id:Number(userId)
+    }
+  })
+  res.json(
+    {
+      pendingAmount: listener?.pending_amount,
+      lockedAmount:listener?.locked_amount
+    }
+  );
+})
+
 router.post("/submission", workerAuthMiddleware, async (req, res) => {
   //@ts-ignore
   const userId = req.userId;

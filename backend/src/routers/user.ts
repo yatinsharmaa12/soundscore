@@ -27,22 +27,7 @@ const s3Client = new S3Client({
   region: "ap-south-1",
 });
 
-router.get('/balance', workerAuthMiddleware,async(req,res)=>{
-  //@ts-ignore
-  const userId:string = req.userId;
 
-  const listener = await prismaClient.listner.findFirst({
-    where:{
-      id:Number(userId)
-    }
-  })
-  res.json(
-    {
-      pendingAmount: listener?.pending_amount,
-      lockedAmount:listener?.locked_amount
-    }
-  );
-})
 
 router.get("/task", authMiddleware, async (req, res) => {
   //@ts-ignore
