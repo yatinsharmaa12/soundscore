@@ -15,6 +15,59 @@ const TOTAL_SUBMISSION = 100;
 const TOTAL_DECIMALS = 1000_000;
 
 
+router.post("/payout", workerAuthMiddleware, async(req,res) =>
+{
+  //@ts-ignore
+  const userId:string = req.userId;
+  const listner = await prismaClient.listner.findFirst({
+    where:{
+      id:Number(userId)
+    }
+  })
+
+  if(!listner)
+    {
+      return res.status(403).json({message:"User not found"})
+    }
+
+    const address = listner.address;
+
+    const  txnId = "Ox12412124"
+
+    await prismaClient.$transaction(async tx =>{
+      await tx.listner.update({
+        where:{
+          id:Number(userId)
+        },
+        data:{
+          pending_amount:{
+            decrement:listner.pending_amount
+          },
+          locked_amount:{
+            increment:listner.pending_amount
+          }
+        }
+
+      })
+
+      await tx.payout.create({
+        data:{
+          user_id:Number(userId),
+          amount: listner.pending_amount,
+          status:"Processing",
+          signature:txnId
+        }
+      })
+    })
+
+    res.json({
+      Message:"Processing payout",
+      amount:listner.pending_amount
+    })
+
+
+})
+
 router.get('/balance', workerAuthMiddleware,async(req,res)=>{
   //@ts-ignore
   const userId:string = req.userId;
