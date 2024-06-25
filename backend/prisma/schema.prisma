@@ -13,49 +13,65 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User{
-  id       Int         @id @default(autoincrement())
-  address  String      @unique
-  tasks     Task[]
+model User {
+  id      Int      @id @default(autoincrement())
+  address String   @unique
+  tasks   Task[]
+  Payout  Payout[]
 }
-model Listner{
-  id       Int         @id @default(autoincrement())
-  address  String      @unique
-  submissions Submission[]
+
+model Listner {
+  id             Int          @id @default(autoincrement())
+  address        String       @unique
+  submissions    Submission[]
   pending_amount Int
-  locked_amount Int
+  locked_amount  Int
 }
 
-model Task{
-  id Int @id @default(autoincrement())
-  title String
-  options Option[]
-  user_id Int
-  signature String
-  amount Int
-  done Boolean @default(false)
-  user User @relation(fields: [user_id], references: [id])
+model Task {
+  id          Int          @id @default(autoincrement())
+  title       String
+  options     Option[]
+  user_id     Int
+  signature   String
+  amount      Int
+  done        Boolean      @default(false)
+  user        User         @relation(fields: [user_id], references: [id])
   submissions Submission[]
 }
 
-model Option{
-  id Int @id @default(autoincrement())
-  beat_url String
-  task_id Int
-  task      Task    @relation(fields: [task_id],references: [id])
+model Option {
+  id          Int          @id @default(autoincrement())
+  beat_url    String
+  task_id     Int
+  task        Task         @relation(fields: [task_id], references: [id])
   submissions Submission[]
 }
 
-
-model Submission{
-  id Int @id @default(autoincrement())
+model Submission {
+  id         Int     @id @default(autoincrement())
   listner_id Int
-  listner Listner @relation(fields: [listner_id],references: [id])
-  option_id Int
-  option Option @relation(fields: [option_id],references: [id])
-  task_id Int
-  task Task @relation(fields: [task_id],references: [id])
-  amount Int
-  @@unique([listner_id,task_id])
+  listner    Listner @relation(fields: [listner_id], references: [id])
+  option_id  Int
+  option     Option  @relation(fields: [option_id], references: [id])
+  task_id    Int
+  task       Task    @relation(fields: [task_id], references: [id])
+  amount     Int
+
+  @@unique([listner_id, task_id])
 }
 
+model Payout {
+  id        Int       @id @default(autoincrement())
+  user_id   Int
+  user      User      @relation(fields: [user_id], references: [id])
+  amount    Int
+  signature String
+  status    TxnStatus
+}
+
+enum TxnStatus {
+  Processing
+  Success
+  Failure
+}
