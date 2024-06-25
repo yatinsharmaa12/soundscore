@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { Router } from "express";
+import cors from "cors";
 
 import {
   S3Client,
@@ -26,8 +27,6 @@ const s3Client = new S3Client({
   credentials: fromEnv(),
   region: "ap-south-1",
 });
-
-
 
 router.get("/task", authMiddleware, async (req, res) => {
   //@ts-ignore
@@ -67,7 +66,7 @@ router.get("/task", authMiddleware, async (req, res) => {
     }
   > = {};
 
-  taskDetails.options.forEach( option => {
+  taskDetails.options.forEach((option) => {
     result[option.id] = {
       count: 1,
       option: {
@@ -130,7 +129,7 @@ router.get("/presignedURL", authMiddleware, async (req, res) => {
 
   const { url, fields } = await createPresignedPost(s3Client, {
     Bucket: "quecto",
-    Key: "beats/${userId}/${Math.random()}/beats.mp3",
+    Key: `beats/${userId}/${Math.random()}/image.jpg`,
     Conditions: [
       ["content-length-range", 0, 5 * 1024 * 1024], // 5 MB max
     ],
@@ -142,7 +141,7 @@ router.get("/presignedURL", authMiddleware, async (req, res) => {
   });
 
   console.log({ url, fields });
-  res.json({ preSignedUrl: url });
+  res.json({ preSignedUrl: url, fields });
 });
 
 router.post("/signin", async (req, res) => {
