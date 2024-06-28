@@ -3,14 +3,14 @@ services:
   frontend:
     image: sidharthsingh7/ss_user_frontend:0.0.2.RELEASE
     ports:
-      - "3006:3000"
+      - "3000:3000"
     depends_on:
       - backend
     networks:
       - app-network
 
   backend:
-    image: sidharthsingh7/ss_backend:0.0.1.RELEASE
+    image: sidharthsingh7/ss_backend:0.0.2.RELEASE
     ports:
       - "4000:4000"
     networks:
