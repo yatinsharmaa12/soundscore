@@ -5,7 +5,7 @@ pipeline {
         DOCKERHUB_CREDENTIALS = credentials('1fe75ff7-3325-4fbb-927d-788a3461e268')
         BACKEND_IMAGE = 'sidharthsingh7/ss_backend'
         FRONTEND_IMAGE = 'sidharthsingh7/ss_frontend'
-        DOCKER_TAG = '0.0.1.RELEASE'
+        DOCKER_TAG = '0.0.2.RELEASE'
     }
 
     stages {
