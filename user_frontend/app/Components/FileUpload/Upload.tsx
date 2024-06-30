@@ -1,30 +1,30 @@
-import { BACKEND_URL } from '@/Utils/Utils';
 import React from 'react'
 import { useState } from 'react'
 import axios from 'axios';
 
 const Upload = () => {
 
-    const [images,setImages] = useState<string[]>([]);
+    const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
-    const [title,setTitle] = useState("");
+    const [images, setImages] = useState<string[]>([]);
 
-    async function onSubmit()
-    {
+    const [title, setTitle] = useState("");
+
+    async function onSubmit() {
         const response = await axios.post(`${BACKEND_URL}/v1/user/task`,
             {
-                options:images.map(image =>({
-                    imageUrl:image
+                options: images.map(image => ({
+                    imageUrl: image
                 })),
                 title,
                 signature: "hardcoded-signture"
 
 
-            },{
-                headers:{
-                    "Authorization":localStorage.getItem("token")
-                }
+            }, {
+            headers: {
+                "Authorization": localStorage.getItem("token")
             }
+        }
 
         )
 
@@ -33,9 +33,9 @@ const Upload = () => {
     }
 
 
-  return (
-    <div>Upload</div>
-  )
+    return (
+        <div>Upload</div>
+    )
 }
 
 export default Upload

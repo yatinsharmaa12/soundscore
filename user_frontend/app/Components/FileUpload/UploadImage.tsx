@@ -1,18 +1,19 @@
 "use client"
 import axios from 'axios';
 import React, { useState } from 'react'
-import { BACKEND_URL } from '@/Utils/Utils';
-import { CLOUDFRONT_URL } from '@/Utils/Utils';
+
+
 import Image from 'next/image';
 import { Progress } from '@/components/ui/progress';
 import { Button } from '@/components/ui/button';
 const UploadImage = (
-//   { onImageAdded, image }: {
-//   onImageAdded: (image: string) => void;
-//   image: string;
-// }
+  //   { onImageAdded, image }: {
+  //   onImageAdded: (image: string) => void;
+  //   image: string;
+  // }
 
 ) => {
+  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
   const [uploading, setUploading] = useState(false);
 
 
@@ -22,7 +23,7 @@ const UploadImage = (
       const file = e.target.files[0];
       setUploading(true);
       console.log("token is ", localStorage.getItem("token"));
-      const response = await axios.get(`http://localhost:4000/v1/user/presignedURL`, {
+      const response = await axios.get(`${BACKEND_URL}/v1/user/presignedURL`, {
         headers: {
           "Authorization": localStorage.getItem("token"),
 
