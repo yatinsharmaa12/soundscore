@@ -4,3 +4,6 @@ dist/
 backend/dist/
 .env
 .next
+aws-secret.yaml
+backend-deploy.yaml
+DATABASE_URL.yaml
