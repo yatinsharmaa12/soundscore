@@ -1,10 +1,10 @@
 import React from 'react'
 import { useState } from 'react'
 import axios from 'axios';
+import { BACKEND_URL } from '@/Utils/Utils';
 
 const Upload = () => {
 
-    const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
     const [images, setImages] = useState<string[]>([]);
 

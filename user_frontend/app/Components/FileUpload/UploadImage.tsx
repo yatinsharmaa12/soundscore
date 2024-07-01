@@ -6,6 +6,7 @@ import React, { useState } from 'react'
 import Image from 'next/image';
 import { Progress } from '@/components/ui/progress';
 import { Button } from '@/components/ui/button';
+import { BACKEND_URL } from '@/Utils/Utils';
 const UploadImage = (
   //   { onImageAdded, image }: {
   //   onImageAdded: (image: string) => void;
@@ -13,9 +14,7 @@ const UploadImage = (
   // }
 
 ) => {
-  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
   const [uploading, setUploading] = useState(false);
-
 
   async function onFileSelect(e: any) {
     try {
@@ -23,6 +22,7 @@ const UploadImage = (
       const file = e.target.files[0];
       setUploading(true);
       console.log("token is ", localStorage.getItem("token"));
+
       const response = await axios.get(`${BACKEND_URL}/v1/user/presignedURL`, {
         headers: {
           "Authorization": localStorage.getItem("token"),
