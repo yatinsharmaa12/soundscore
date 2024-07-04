@@ -25,7 +25,7 @@ const s3Client = new S3Client({
   //   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
   // }
   credentials: fromEnv(),
-  region: "ap-south-1",
+  region: "us-east-1",
 });
 
 router.get("/task", authMiddleware, async (req, res) => {
@@ -128,7 +128,7 @@ router.get("/presignedURL", authMiddleware, async (req, res) => {
   // });
 
   const { url, fields } = await createPresignedPost(s3Client, {
-    Bucket: "quecto",
+    Bucket: "soundscorebuckets",
     Key: `beats/${userId}/${Math.random()}/image.jpg`,
     Conditions: [
       ["content-length-range", 0, 5 * 1024 * 1024], // 5 MB max
