@@ -6,24 +6,36 @@ import React, { useState } from 'react'
 import Image from 'next/image';
 import { Progress } from '@/components/ui/progress';
 import { Button } from '@/components/ui/button';
-import { BACKEND_URL } from '@/Utils/Utils';
+import { BACKEND_URL, CLOUDFRONT_URL } from '@/Utils/Utils';
 const UploadImage = (
-  //   { onImageAdded, image }: {
-  //   onImageAdded: (image: string) => void;
-  //   image: string;
-  // }
+  { updateFileName, fileName,updateFileURL,fileURL }:
+    {
+      updateFileName: (newImages: string[]) => void,
+      fileName: string[],
+      updateFileURL: (newImages: string[]) => void,
+      fileURL: string[],
+    }
 
 ) => {
   const [uploading, setUploading] = useState(false);
+  // function onCheck(){
+  //   console.log(CLOUDFRONT_URL);
+  // }
 
   async function onFileSelect(e: any) {
     try {
+      console.log("HEELO");
       console.log(e.target.files[0]);
       const file = e.target.files[0];
+      const filename = file.name;
+      // console.log(filename);
+      updateFileName([filename]);
       setUploading(true);
       console.log("token is ", localStorage.getItem("token"));
 
-      const response = await axios.get(`${BACKEND_URL}/v1/user/presignedURL`, {
+      const response = await axios.post(`${BACKEND_URL}/v1/user/presignedURL`,{
+        filename,
+      }, {
         headers: {
           "Authorization": localStorage.getItem("token"),
 
@@ -45,7 +57,8 @@ const UploadImage = (
       const awsResponse = await axios.post(presignedUrl, formData);
       console.log(awsResponse);
 
-      // onImageAdded(`${CLOUDFRONT_URL}/${response.data.fields["key"]}`);
+      updateFileURL([`${CLOUDFRONT_URL}/${response.data.fields["key"]}`]);
+      console.log(`${CLOUDFRONT_URL}/${response.data.fields["key"]}`);
     }
     catch (e) {
       console.log(e);
@@ -63,16 +76,22 @@ const UploadImage = (
 
   return (
     <div>
-      <Button variant="secondary">
-        UPLOAD
-        <input
+      {/* <Button variant="secondary" className='w-full flex justify-center'>
+        
+        
+      </Button> */}
+
+      <div className='relative btn btn-sm btn-primary  text-lg font-medium'>
+        Upload
+      <input
           type="file"
           onChange={onFileSelect}
           id="fileInput"
-          className='absolute top-0 left-0 h-full w-full opacity-0  cursor-pointer'
+          className=' absolute z-10 left-0 opacity-0  cursor-pointer'
         />
 
-      </Button>
+
+      </div>
 
 
 

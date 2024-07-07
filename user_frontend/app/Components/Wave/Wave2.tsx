@@ -5,7 +5,7 @@ import './Waves2.css'
 
 const Wave2 = () => {
     return (
-        <div>
+        <div className='h-full w-full'>
             <svg id="svg" viewBox="0 0 1440 490" xmlns="http://www.w3.org/2000/svg" className="w-full h-full  transition duration-300 ease-in-out delay-150">
 
 

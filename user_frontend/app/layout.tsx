@@ -2,6 +2,10 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Poppins } from "next/font/google";
 import "./globals.css";
+import { Raleway } from "next/font/google";
+
+
+const raleway = Raleway({ subsets: ["latin"] });
 
 const inter = Inter({ subsets: ["latin"] });
 const poppins = Poppins({ 
@@ -19,8 +23,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark" >
-      <body className={inter.className}>{children}</body>
+    <html lang="en" data-theme="dark">
+      <body className={raleway.className} >{children}</body>
     </html>
   );
 }
