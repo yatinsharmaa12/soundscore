@@ -7,6 +7,8 @@ import { Input } from "@/components/ui/input"
 import { Label } from '@/components/ui/label';
 import axios from 'axios';
 import { BACKEND_URL } from '@/Utils/Utils';
+import AudioPlayers from './AudioPlayer/AudioPlayer';
+import AudioPlayerMini from './AudioPlayer/AudioPlayerMini';
 
 const Hero = () => {
 
@@ -21,6 +23,11 @@ const Hero = () => {
   const updateFileURL = (newFileURL: string[]) => {
     setFileURL([...fileURL, ...newFileURL]);
   };
+
+  const audioFiles = fileName.map((name, index) => ({
+    audioSrc: fileURL[index],
+    title: name,
+  }));
 
   async function onSubmit() {
     const response = await axios.post(`${BACKEND_URL}/v1/user/task`,
@@ -59,20 +66,28 @@ const Hero = () => {
         <div className='relative top-40 left-16 text-7xl' >
           <span className=' text-white font-extrabold' >
             Get them   <span className="bg-gradient-to-r from-pink-500 to-rose-500 bg-clip-text text-transparent">
-            <Typewriter
-            words={['RATED', 'REVIEWED',]}
-            loop={1}
-            cursor
-            cursorStyle='_'
-            typeSpeed={100}
-            deleteSpeed={50}
-            delaySpeed={1000}
-          />
-              
-              </span>
+              <Typewriter
+                words={['RATED', 'REVIEWED',]}
+                loop={1}
+                cursor
+                cursorStyle='_'
+                typeSpeed={100}
+                deleteSpeed={50}
+                delaySpeed={1000}
+              />
+
+            </span>
           </span>
         </div>
-        
+
+        <div>
+          <div className='absolute z-10'>
+          
+        </div>
+
+          </div>
+       
+
 
 
 
@@ -109,17 +124,22 @@ const Hero = () => {
                   <li key={index}>{name}</li>
                 ))}
               </ul>
+              
+               {/* {audioFiles.map((file, index) => (
+            <AudioPlayerMini key={index} audioSrc={file.audioSrc} title={file.title} />
+          ))} */}
             </div>
           </div>
 
           <div className='btn btn-lg w-1/4 btn-success' onClick={onSubmit}>
-            {/* SUBMIT */}
-            <span className="loading loading-dots loading-lg"></span>
+            SUBMIT
+            {/* <span className="loading loading-dots loading-lg"></span> */}
           </div>
-
+          {/* <AudioPlayerMini /> */}
 
 
         </div>
+        
 
 
       </div>

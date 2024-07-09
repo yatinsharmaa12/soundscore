@@ -1,27 +1,42 @@
 import Image from "next/image";
 import Appbar from "./Components/Appbar";
 import Hero from "./Components/Hero";
-import Wave from "./Components/Wave/Wave";
-import Wave2 from "./Components/Wave/Wave2";
 import UploadImage from "./Components/FileUpload/UploadImage";
 import Footer from "./Components/Footer/Footer";
+import Banner from "./Components/Banner/Banner";
+import Upload from "./Components/Upload/Upload";
 
 export default function Home() {
   return (
-    <main className="flex flex-col h-screen">
+    <main className=" h-screen bg-[]  ">
 
-      <div className="w-full h-20 ">
+      <div className="w-full fixed  z-20 ">
         <Appbar />
       </div>
 
-      <div className="flex-1  ">
+      <div className="h-full  w-full fixed z-5 ">
         {/* Content of the middle section */}
-        <Hero />
+        {/* <Hero /> */}
+        <Banner/>
       </div>
 
-      <div className=" h-36 bg-gray-200 ">
-      <Footer/>
+      {/* <div className="h-3/4 ">
+
+      </div> */}
+
+      <div className="h-screen w-screen absolute flex flex-col items-center p-4  bg-black rounded-3xl z-10 top-[80%] ">
+      
+      <Upload/>
+      
+
       </div>
+
+     
+      
+
+      {/* <div className=" h-36  bg-gray-200 ">
+      <Footer/>
+      </div> */}
 
     </main>
   );
