@@ -6,6 +6,7 @@ import React, { useState } from 'react'
 import Image from 'next/image';
 import { Progress } from '@/components/ui/progress';
 import { Button } from '@/components/ui/button';
+
 import { BACKEND_URL, CLOUDFRONT_URL } from '@/Utils/Utils';
 const UploadImage = (
   { updateFileName, fileName,updateFileURL,fileURL }:

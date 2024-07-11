@@ -125,9 +125,9 @@ const Hero = () => {
                 ))}
               </ul>
               
-               {/* {audioFiles.map((file, index) => (
+               {audioFiles.map((file, index) => (
             <AudioPlayerMini key={index} audioSrc={file.audioSrc} title={file.title} />
-          ))} */}
+          ))}
             </div>
           </div>
 

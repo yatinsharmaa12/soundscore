@@ -24,7 +24,7 @@ export default function Home() {
 
       </div> */}
 
-      <div className="h-screen w-screen absolute flex flex-col items-center p-4  bg-black rounded-3xl z-10 top-[80%] ">
+      <div className="h-screen w-screen absolute flex flex-col items-center p-4  bg-[#1B1D1E] rounded-3xl z-10 top-[80%] ">
       
       <Upload/>
       
