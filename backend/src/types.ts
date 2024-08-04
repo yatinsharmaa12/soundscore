@@ -3,8 +3,8 @@ import z from 'zod';
 
 export const createTaskInput = z.object({
     options: z.array(z.object({
-        imageUrl: z.string()
-    })),
+        beatUrl: z.string()
+    })).nonempty("Options cannot be empty"),
     title: z.string().optional(),
     signature: z.string()
 });
