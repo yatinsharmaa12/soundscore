@@ -50,11 +50,13 @@ const UploadImage2 = ({ updateFileName, fileName, updateFileURL, fileURL }:
             formData.append("Policy", fields.Policy);
             formData.append("X-Amz-Signature", fields["X-Amz-Signature"]);
             formData.append("file", file);
+
             const awsResponse = await axios.post(presignedUrl, formData);
             console.log(awsResponse);
+            // console.log(response.data.key);
 
-            updateFileURL([`${CLOUDFRONT_URL}/${response.data.fields["key"]}`]);
-            console.log(`${CLOUDFRONT_URL}/${response.data.fields["key"]}`);
+            updateFileURL([`https://soundscorebucket.s3.ap-south-1.amazonaws.com/${response.data.fields["key"]}`]);
+            console.log(`https://soundscorebucket.s3.ap-south-1.amazonaws.com/${response.data.fields["key"]}`);
         }
         catch (e) {
             console.log(e);
