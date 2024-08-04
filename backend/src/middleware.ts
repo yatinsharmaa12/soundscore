@@ -13,15 +13,11 @@ export function authMiddleware(
     const decoded = jwt.verify(authHeader, JWT_SECRET);
     //@ts-ignore
     if (decoded.userId) {
-        //@ts-ignore
-        req.userId  = decoded.userId;
-        return next();
-
-    }
-    else
-    {
-        return res.status(403).json({ message: "NOT Logged SOmetisda IN" });
-
+      //@ts-ignore
+      req.userId = decoded.userId;
+      return next();
+    } else {
+      return res.status(403).json({ message: "NOT Logged SOmetisda IN" });
     }
 
     next();
@@ -29,7 +25,6 @@ export function authMiddleware(
     return res.status(403).json({ message: "NOT asdasd IN" });
   }
 }
-
 
 export function workerAuthMiddleware(
   req: Request,
@@ -41,15 +36,11 @@ export function workerAuthMiddleware(
     const decoded = jwt.verify(authHeader, WORKER_JWT_SECRET);
     //@ts-ignore
     if (decoded.userId) {
-        //@ts-ignore
-        req.userId  = decoded.userId;
-        return next();
-
-    }
-    else
-    {
-        return res.status(403).json({ message: "NOT Logged SOmetisda IN" });
-
+      //@ts-ignore
+      req.userId = decoded.userId;
+      return next();
+    } else {
+      return res.status(403).json({ message: "NOT Logged SOmetisda IN" });
     }
 
     next();

@@ -7,3 +7,5 @@ backend/dist/
 aws-secret.yaml
 backend-deploy.yaml
 DATABASE_URL.yaml
+BACKEND_URL.yaml
+frontend-deploy.yaml
