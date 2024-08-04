@@ -25,7 +25,7 @@ const s3Client = new S3Client({
   //   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
   // }
   credentials: fromEnv(),
-  region: "us-east-1",
+  region: "ap-south-1",
 });
 
 router.get("/task", authMiddleware, async (req, res) => {
@@ -90,9 +90,9 @@ router.post("/task", authMiddleware, async (req, res) => {
   const body = req.body;
   const parsedData = createTaskInput.safeParse(body);
   if (!parsedData.success) {
-    return res.status(411).json({ message: "Wrong input" });
+    return res.status(400).json({ message: "Wrong input", errors: parsedData.error.errors });
   }
-
+  console.log("SUCCESS BC!!!");
   const response = await prismaClient.$transaction(async (tx) => {
     const response = await tx.task.create({
       data: {
@@ -105,7 +105,7 @@ router.post("/task", authMiddleware, async (req, res) => {
 
     await tx.option.createMany({
       data: parsedData.data.options.map((x) => ({
-        beat_url: x.imageUrl,
+        beat_url: x.beatUrl,
         task_id: response.id,
       })),
     });
@@ -117,9 +117,13 @@ router.post("/task", authMiddleware, async (req, res) => {
   });
 });
 
-router.get("/presignedURL", authMiddleware, async (req, res) => {
+router.post("/presignedURL", authMiddleware, async (req, res) => {
   //@ts-ignore
   const userId = req.userId;
+  //@ts-ignore
+  const filename = req.body.filename;
+
+  console.log("file name is " + filename);
 
   // const command = new PutObjectCommand({
   //   Bucket: "quecto",
@@ -128,8 +132,8 @@ router.get("/presignedURL", authMiddleware, async (req, res) => {
   // });
 
   const { url, fields } = await createPresignedPost(s3Client, {
-    Bucket: "soundscorebuckets",
-    Key: `beats/${userId}/${Math.random()}/image.jpg`,
+    Bucket: "soundscorebucket",
+    Key: `beats/${userId}/${Math.random()}/${filename}`,
     Conditions: [
       ["content-length-range", 0, 5 * 1024 * 1024], // 5 MB max
     ],
