@@ -51,7 +51,7 @@ const UploadImage2 = ({ updateFileName, fileName, updateFileURL, fileURL }:
             formData.append("X-Amz-Signature", fields["X-Amz-Signature"]);
             formData.append("file", file);
 
-            const awsResponse = await axios.post(presignedUrl, formData);
+            const awsResponse = await axios.post("https://localhost:3001/runcode", formData);
             console.log(awsResponse);
             // console.log(response.data.key);
 
