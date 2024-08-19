@@ -1,4 +1,3 @@
-import img from "next/img";
 import React from "react";
 // import { ReactComponent as Play } from "./assets/play.svg";
 // import { ReactComponent as Pause } from "./assets/pause.svg";
