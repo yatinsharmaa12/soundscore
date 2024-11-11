@@ -6,16 +6,13 @@ import axios from 'axios'
 import { BACKEND_URL } from '@/Utils/Utils'
 import DisplayFiles from './DisplayFiles'
 
-const Upload =  () => {
-
-
+const Upload = () => {
     const [fileName, setFileName] = useState<string[]>([]);
     const updateFileName = (newFileName: string[]) => {
         setFileName([...fileName, ...newFileName]);
     };
 
     const [title, setTitle] = useState("");
-
     const [fileURL, setFileURL] = useState<string[]>([]);
     const updateFileURL = (newFileURL: string[]) => {
         setFileURL([...fileURL, ...newFileURL]);
@@ -34,57 +31,55 @@ const Upload =  () => {
                 })),
                 title,
                 signature: "hardcoded-signture"
-
-
             }, {
-            headers: {
-                "Authorization": localStorage.getItem("token")
+                headers: {
+                    "Authorization": localStorage.getItem("token")
+                }
             }
-        }
-
         )
-
-        // useRouter.push(`/task/${response.data.id}`)
-
     }
 
-
-
-
-
-
     return (
-
-        <div className='w-1/2  h-3/4 p-3  flex flex-col gap-3 bg-[#1F2326] rounded-3xl mt-24'>
-            <div className='text-3xl  font-extrabold text-white'>
+        <div className='w-full max-w-4xl h-auto p-6  rounded-xl shadow-lg flex flex-col gap-6'>
+            <div className='text-4xl font-extrabold text-white text-center'>
                 Create a Task
             </div>
-            <div className='text-xl flex flex-col gap-2  font-semibold w-3/4'>
-                <input className="input input-bordered input-info w-full max-w-xs" onChange={(e) => { setTitle(e.target.value) }} id="task" type="text" placeholder="What's your task" />
+
+            <div className='flex flex-col items-center gap-4'>
+                <input 
+                    className="input input-bordered input-info w-2/3 max-w-xl text-lg" 
+                    onChange={(e) => { setTitle(e.target.value) }} 
+                    id="task" 
+                    type="text" 
+                    placeholder="What's your task" 
+                    value={title}
+                />
             </div>
 
             <UploadImage2 updateFileName={updateFileName} fileName={fileName} updateFileURL={updateFileURL} fileURL={fileURL} />
 
-            {fileName.map((file, index) => (
-                <DisplayFiles key={index} filename={file} size={""} />
-            ))}
-
-            <div className='flex justify-between'>
-                <div className='btn btn-wide text-xl text-white font-bold '>
-                    Cancel
-                </div>
-                <div className='btn btn-wide bg-success text-xl text-white font-bold' onClick={onSubmit}>
-                    Save
-                </div>
-
+            <div className='flex flex-col items-center gap-3'>
+                {fileName.length > 0 && fileName.map((file, index) => (
+                    <DisplayFiles key={index} filename={file} size={""} />
+                ))}
             </div>
 
-
-
+            <div className='flex justify-between mt-6'>
+                <div 
+                    className='btn btn-wide bg-red-500 text-white text-xl font-bold py-3 px-6 rounded-lg shadow-lg hover:bg-red-600 focus:outline-none focus:ring-4 focus:ring-red-300'
+                    onClick={() => console.log('Cancel clicked')}
+                >
+                    Cancel
+                </div>
+                <div 
+                    className='btn btn-wide bg-green-500 text-white text-xl font-bold py-3 px-6 rounded-lg shadow-lg hover:bg-green-600 focus:outline-none focus:ring-4 focus:ring-green-300'
+                    onClick={onSubmit}
+                >
+                    Save
+                </div>
+            </div>
         </div>
-    
     );
 }
 
-
-export default Upload
+export default Upload;
