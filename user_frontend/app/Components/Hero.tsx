@@ -81,27 +81,23 @@ const Hero = () => {
         </div>
 
         <div>
-          <div className='absolute z-10'>
+          <div className='absolute '>
           
         </div>
 
           </div>
+          
+
+          
        
 
-
-
-
-
-
-
-
       </div>
-      <div className='w-2/5 h-full'>
+      <div className='w-2/5 h-full -z-0'>
         {/* Add your upload components or other content here */}
-        <div className='relative flex flex-col gap-3  top-36 left-9 '>
+        <div className='relative flex flex-col gap-3  top-36 left-9 z-0 '>
 
-          <div className='text-3xl font-extrabold text-white'>
-            Create a Task
+          <div className='text-3xl font-extrabold text-white '>
+         Create a Task
           </div>
           <div className='text-xl flex flex-col gap-2  font-semibold w-3/4'>
             <Label htmlFor="task" className='text-white'>TaskDetails </Label>
@@ -148,3 +144,5 @@ const Hero = () => {
 }
 
 export default Hero;
+
+

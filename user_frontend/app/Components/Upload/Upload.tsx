@@ -6,7 +6,7 @@ import axios from 'axios'
 import { BACKEND_URL } from '@/Utils/Utils'
 import DisplayFiles from './DisplayFiles'
 
-const Upload = () => {
+const Upload =  () => {
 
 
     const [fileName, setFileName] = useState<string[]>([]);
@@ -54,10 +54,9 @@ const Upload = () => {
 
 
     return (
-        <div className='w-1/2 h-3/4 p-3 flex flex-col gap-3 bg-[#1F2326] rounded-3xl'>
 
-
-            <div className='text-3xl font-extrabold text-white'>
+        <div className='w-1/2  h-3/4 p-3  flex flex-col gap-3 bg-[#1F2326] rounded-3xl mt-24'>
+            <div className='text-3xl  font-extrabold text-white'>
                 Create a Task
             </div>
             <div className='text-xl flex flex-col gap-2  font-semibold w-3/4'>
@@ -83,7 +82,9 @@ const Upload = () => {
 
 
         </div>
-    )
+    
+    );
 }
+
 
 export default Upload

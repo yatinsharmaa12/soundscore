@@ -14,7 +14,7 @@ export default function Home() {
         <Appbar />
       </div>
 
-      <div className="h-full  w-full fixed z-5 ">
+      <div className="h-full  w-full fixed z-0 ">
         {/* Content of the middle section */}
         {/* <Hero /> */}
         <Banner/>
@@ -24,7 +24,7 @@ export default function Home() {
 
       </div> */}
 
-      <div className="h-screen w-screen absolute flex flex-col items-center p-4  bg-[#1B1D1E] rounded-3xl z-10 top-[80%] ">
+      <div className="h-screen w-screen absolute flex flex-col items-center p-4  bg-[#1B1D1E] rounded-3xl z-10 top-[80%] mt-12 " id="upload">
       
       <Upload/>
       
