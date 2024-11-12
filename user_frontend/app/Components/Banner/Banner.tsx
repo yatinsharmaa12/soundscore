@@ -27,13 +27,13 @@ const Banner = () => {
                     Upload your Beats/Music and get them rated from listeners all over the world 
                 </div>
 
-                <Link href="#upload">
+                <a href={"#upload"}>
 
                 <button className=' font-bold text-xl btn btn-lg mt-5 bg-gradient-to-r from-pink-500 to-rose-500 text-white border-0 animate-gradient-x'>
                 Upload Your Music
 
                 </button>
-                </Link>
+                </a>
             </div>
 
 

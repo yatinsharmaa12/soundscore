@@ -28,13 +28,12 @@ export default function Home() {
 <div
     className="h-screen w-screen absolute flex flex-col items-center p-4 bg-cover bg-center bg-no-repeat rounded-3xl z-10 top-[80%] mt-36"
     style={{
-        backgroundImage: `url('https://img.freepik.com/free-vector/abstract-musical-sound-waves-design-background_1048-20072.jpg?t=st=1731312918~exp=1731316518~hmac=4b179997fa0605d0aaa99842e74057d81128ae23ddb04efb5fbb58afc39e6921&w=740')`,
-        backgroundColor: '#57a8d1', // fallback background color
+        backgroundColor:"black", // fallback background color
     }}
     id="upload"
 >
     {/* Overlay for better visibility of the Upload component */}
-    <div className="bg-[#1F2326] bg-opacity-80 w-full max-w-3xl p-6 rounded-lg shadow-lg z-20">
+    <div className="bg-[#000000] bg-opacity-80 w-full max-w-3xl p-6 rounded-lg shadow-lg z-20">
         <Upload />
     </div>
 </div>
